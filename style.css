@@ -1,0 +1,85 @@
+  body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://w0.peakpx.com/wallpaper/346/562/HD-wallpaper-leaves-drops-water-wet-macro.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .timer-wrapper {
+      display: flex;
+      justify-content: center;
+      position: relative; /* Set the wrapper as a positioning context */
+    }
+    .timer-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px;
+    }
+    .timer-circle {
+      fill: none;
+      stroke-width: 5; /* Set a smaller value to make the circles thinner */
+      position: absolute; /* Position the circles absolutely within the wrapper */
+      top: 0;
+      left: 0;
+      filter: url(#white-glow); /* Add the white glow effect to the circles */
+    }
+    .timer-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: white; /* Set the text color to white */
+    }
+    .timer-input {
+      margin-top: 10px; /* Add some space between the circles and input fields */
+      color: white; /* Set the input text color to white */
+      background-color: rgba(255, 255, 255, 0.1); /* Add a semi-transparent background to the input fields */
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      width: 100px;
+      text-align: center;
+    }
+    .button-container {
+      margin-top: 20px;
+    }
+    button {
+      margin: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      color: white; /* Set the button text color to white */
+      background-color: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background to the buttons */
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+    }
+button:hover {
+      background-color: rgb(255, 20, 147); /* Neon pink background on hover */
+    }
+
+ /* Add highlighting effects when clicking on the buttons */
+    button:active {
+      background-color: rgba(255, 20, 147, 0.6); /* Semi-transparent neon pink background when active (clicked) */
+    }
+
+    h2 {
+      font-size: 40px;
+      margin-top: 30px;
+      color: white; /* Set the paragraph text color to white */
+      font-family: 'Impact', sans-serif;
+    }
+
+    /* CSS Animation for the glow effect */
+    @keyframes glow {
+      0% {
+        stroke-width: 5;
+      }
+      50% {
+        stroke-width: 8; /* Increase the stroke-width to create the glow effect */
+      }
+      100% {
+        stroke-width: 5;
+      }
+    }

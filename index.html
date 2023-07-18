@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer with SVG Circles</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="timer-wrapper">
+    <div class="timer-container">
+      <svg id="days-timer" width="200" height="200">
+        <circle class="timer-circle" cx="100" cy="100" r="90" stroke="#00aaff"></circle>
+      </svg>
+      <div class="timer-text">
+        <span id="days">00</span> days
+      </div>
+      <input class="timer-input" type="number" id="input-days" placeholder="Days" />
+    </div>
+
+    <div class="timer-container">
+      <svg id="hours-timer" width="200" height="200">
+        <circle class="timer-circle" cx="100" cy="100" r="90" stroke="#ff5500"></circle>
+      </svg>
+      <div class="timer-text">
+        <span id="hours">00</span> hours
+      </div>
+      <input class="timer-input" type="number" id="input-hours" placeholder="Hours" />
+    </div>
+
+    <div class="timer-container">
+      <svg id="minutes-timer" width="200" height="200">
+        <circle class="timer-circle" cx="100" cy="100" r="90" stroke="#aaff00" transform="rotate(90 100 100)"></circle>
+      </svg>
+      <div class="timer-text">
+        <span id="minutes">00</span> minutes
+      </div>
+      <input class="timer-input" type="number" id="input-minutes" placeholder="Minutes" />
+    </div>
+
+    <div class="timer-container">
+      <svg id="seconds-timer" width="200" height="200">
+        <circle class="timer-circle" cx="100" cy="100" r="90" stroke="#ff00aa" transform="rotate(-90 100 100)"></circle>
+      </svg>
+      <div class="timer-text">
+        <span id="seconds">00</span> seconds
+      </div>
+      <input class="timer-input" type="number" id="input-seconds" placeholder="Seconds" />
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button id="start-btn" onclick="startTimer()">Start</button>
+    <button id="stop-btn" onclick="stopTimer()">Stop</button>
+    <button id="reset-btn" onclick="resetTimer()">Reset</button>
+  </div>
+
+  <div class="paragraph-container">
+    <h2>How many days until your birthday?</h2>
+  </div>
+
+  <!-- SVG filter element to create the white glow effect -->
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="0" height="0">
+    <defs>
+      <filter id="white-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <!-- Increase the stdDeviation value to increase the glow effect -->
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="glow" />
+        <feMerge>
+          <feMergeNode in="glow" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <script>
+    let timerInterval;
+    let timeRemaining = 0;
+
+    function updateTimer() {
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = days.toString().padStart(2, "0");
+      document.getElementById("hours").textContent = hours.toString().padStart(2, "0");
+      document.getElementById("minutes").textContent = minutes.toString().padStart(2, "0");
+      document.getElementById("seconds").textContent = seconds.toString().padStart(2, "0");
+
+      const daysProgress = 1 - (days / (365 * 24 * 60 * 60));
+      const hoursProgress = 1 - (hours / (24 * 60 * 60));
+      const minutesProgress = 1 - (minutes / 60); // Minutes progress goes clockwise
+      const secondsProgress = 1 - (seconds / 60); // Seconds progress goes counterclockwise
+
+      document.getElementById("days-timer").setAttribute("stroke-dasharray", `${daysProgress * 565.48} 565.48`);
+      document.getElementById("hours-timer").setAttribute("stroke-dasharray", `${hoursProgress * 565.48} 565.48`);
+      document.getElementById("minutes-timer").setAttribute("stroke-dasharray", `${minutesProgress * 565.48} 565.48`);
+      document.getElementById("seconds-timer").setAttribute("stroke-dasharray", `${secondsProgress * 565.48} 565.48`);
+    }
+
+    function startTimer() {
+      const inputDays = parseInt(document.getElementById("input-days").value) || 0;
+      const inputHours = parseInt(document.getElementById("input-hours").value) || 0;
+      const inputMinutes = parseInt(document.getElementById("input-minutes").value) || 0;
+      const inputSeconds = parseInt(document.getElementById("input-seconds").value) || 0;
+
+      const totalMilliseconds =
+        inputDays * 24 * 60 * 60 * 1000 +
+        inputHours * 60 * 60 * 1000 +
+        inputMinutes * 60 * 1000 +
+        inputSeconds * 1000;
+
+      if (totalMilliseconds <= 0) {
+        alert("Please enter a valid duration.");
+        return;
+      }
+
+      timeRemaining = totalMilliseconds;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(function () {
+        if (timeRemaining > 0) {
+          timeRemaining -= 1000;
+          updateTimer();
+        } else {
+          clearInterval(timerInterval);
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function resetTimer() {
+      timeRemaining = 0;
+      clearInterval(timerInterval);
+      updateTimer();
+    }
+
+    updateTimer();
+  </script>
+</body>
+</html>
